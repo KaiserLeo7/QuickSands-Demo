@@ -8,3 +8,6 @@ Link to the documentation repo: https://github.com/KaiserLeo7/QuickSands/milesto
 To play on a PC Simply download the repo and open the Quick Sands folder.
 
 The exe file is inside. To Play on an android phone download the APK file.
+
+
+![alt text](https://github.com/KaiserLeo7/QuickSands-Demo/blob/main/Screenshots/MainMenu.png)
