@@ -19,6 +19,7 @@ namespace Sands
         [SerializeField] private GameObject[] locations = new GameObject[10];   //stores all locations from the scene
         [SerializeField] private GameObject[] nests = new GameObject[3];        //stores all the nests from the scene
         private List<string> connectedLocationsNames;                           //list of all locations connected to the current location
+        private List<Location> allLocationsNames;
         [SerializeField] private Text clickedLocationName;
         [SerializeField] private Text currentLocation;
         private Location clickedlocation;
@@ -27,9 +28,12 @@ namespace Sands
         private GameObject goButton;                                            //go button from the scene
         private bool goToLocation;                                              //if true the destination is a location if false it's a nest
 
+        private SpriteRenderer spriteRenderer;
 
         public void Start()
         {
+           
+
             //finding gameObjects from the scene
             tradeTip = GameObject.FindGameObjectWithTag("tradeTip");
             goButton = GameObject.FindGameObjectWithTag("goBtn");
@@ -38,7 +42,12 @@ namespace Sands
             goButton.GetComponent<Selectable>().interactable = false;
 
             Player.LoadPlayer();
-            
+
+            //get all location names
+            allLocationsNames = LocationDB.getLocationList();
+
+            //all locations are grayscale by default
+
             //get all the locations that are next to the current location
             connectedLocationsNames = new List<string>();
             foreach (var location in Player.CurrentLocation.NearbyTowns)
@@ -46,22 +55,49 @@ namespace Sands
                 connectedLocationsNames.Add(LocationDB.getLocation(location - 1).LocationName);
             }
 
-            //change the color of nearby towns
+            //change the saturation/color of nearby towns
             foreach (GameObject location in locations)
             {
+
+                location.GetComponent<Image>().material.SetFloat("_GrayscaleAmount", 1);
+
+                //current location
                 if (location.name == Player.CurrentLocation.LocationName)
                 {
-                    location.GetComponent<Image>().color = new Color(0.1f, 0.7f, 0.0f);
-                }
-                if (connectedLocationsNames.Contains(location.name))
-                {
+                    location.GetComponent<Image>().material.SetFloat("_GrayscaleAmount", 0);
+
                     location.GetComponent<Image>().color = Color.cyan;
                 }
+                //connected location
+                if (connectedLocationsNames.Contains(location.name))
+                {
+                    //change grayscale to 0
+                    location.GetComponent<Image>().material.SetFloat("_GrayscaleAmount", 0);
+
+                }
             }
+
+            //change saturation of nests
+            for(int i=0; i<3; i++)
+            {
+              
+                nests[i].GetComponent<Image>().material.SetFloat("_GrayscaleAmount", 1);
+
+                //connected location
+                if (NestDB.getNest(i).NearbyTowns.Contains(Player.CurrentLocation.Id))
+                {
+                    //change grayscale to 0
+                    nests[i].GetComponent<Image>().material.SetFloat("_GrayscaleAmount", 0);
+
+                }
+            }
+
 
             currentLocation.text = Player.CurrentLocation.LocationName;
             clickedLocationName.text = "";
         }
+
+
 
         public void onLocationClick()
         {

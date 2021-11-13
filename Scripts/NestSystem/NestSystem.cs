@@ -1316,9 +1316,11 @@ namespace Sands
             StartCoroutine(PlayerTurn());
         }
 
+
+
         public IEnumerator MoveHeroVehicleIn(float countdownValue = 5f)
         {
-            
+
             while (countdownValue > 0)
             {
                 try
@@ -1327,7 +1329,7 @@ namespace Sands
                     {
                         if (instantiatedHeroVehicle.position != HeroVehicleBS.position)
                         {
-                            Vector3 newPos = Vector3.MoveTowards(instantiatedHeroVehicle.transform.position, HeroVehicleBS.position, 7f * Time.deltaTime * Screen.width / Screen.height);
+                            Vector3 newPos = Vector3.MoveTowards(instantiatedHeroVehicle.transform.position, HeroVehicleBS.position, 0.12f);
                             instantiatedHeroVehicle.transform.position = newPos;
                         }
                         else
@@ -1338,7 +1340,7 @@ namespace Sands
                     {
                         if (instantiatedHeroes[0].position != heroBSList[0].position)
                         {
-                            Vector3 newPos = Vector3.MoveTowards(instantiatedHeroes[0].transform.position, heroBSList[0].position, 3f * Time.deltaTime * Screen.width / Screen.height);
+                            Vector3 newPos = Vector3.MoveTowards(instantiatedHeroes[0].transform.position, heroBSList[0].position, 0.09f);
                             instantiatedHeroes[0].transform.position = newPos;
                         }
                         else
@@ -1356,8 +1358,8 @@ namespace Sands
             }
 
             Parallex.ShouldMove = true;
-            StopCoroutine(moveHeroVehicleInC);
         }
+
 
         private void MoveHeroAimation()
         {
